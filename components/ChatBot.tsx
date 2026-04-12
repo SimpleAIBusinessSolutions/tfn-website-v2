@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 export default function ChatBot() {
   const [open, setOpen] = useState(false);
@@ -8,12 +8,16 @@ export default function ChatBot() {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const send = async () => {
     if (!input.trim() || loading) return;
     const next = [...messages, { role:'user', text: input }];
     setMessages(next);
     setInput('');
+    if (textareaRef.current) {
+      textareaRef.current.style.height = '48px';
+    }
     setLoading(true);
 
     try {
@@ -48,7 +52,13 @@ export default function ChatBot() {
           <div style={{display:'flex',gap:8,alignItems:'flex-end'}}>
             <textarea
               value={input}
-              onChange={(e)=>setInput(e.target.value)}
+              onChange={(e)=>{
+                setInput(e.target.value);
+                const el = e.target;
+                el.style.height = '48px';
+                el.style.height = `${Math.min(el.scrollHeight,120)}px`;
+              }}
+              ref={textareaRef}
               onKeyDown={(e)=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); send(); } }}
               placeholder='Ask a question...'
               rows={1}
