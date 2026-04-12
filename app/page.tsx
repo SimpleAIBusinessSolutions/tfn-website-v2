@@ -13,7 +13,7 @@ export default async function Page(){
    <div style={{position:'absolute',inset:0,background:'linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.78))'}} />
    <div className='container' style={{position:'relative',zIndex:2,maxWidth:1000,padding:'40px 20px'}}>
      <p style={{color:'#f97316',fontWeight:800,letterSpacing:4,textTransform:'uppercase',marginBottom:8}}>Welcome To</p>
-     <h1 style={{color:'#f97316',fontSize:'clamp(40px,8vw,96px)',lineHeight:.95,margin:'0 0 16px',fontWeight:900,whiteSpace:'nowrap',textShadow:'0 8px 30px rgba(0,0,0,.5)'}}>TRUE FITNESS NAAS</h1>
+     <h1 style={{color:'#f97316',fontSize:'clamp(40px,8vw,96px)',lineHeight:.95,margin:'0 0 16px',fontWeight:900,whiteSpace:'normal',textShadow:'0 8px 30px rgba(0,0,0,.5)'}}>TRUE FITNESS NAAS</h1>
      <p className='muted' style={{fontSize:'clamp(18px,2vw,24px)',maxWidth:760,margin:'0 auto'}}>Build strength, improve fitness, and train with a community that pushes you forward.</p>
      <div style={{marginTop:34,display:'flex',justifyContent:'center',gap:16,flexWrap:'wrap'}}>
        <Link href='/contact' className='btn'>Start Today</Link>
