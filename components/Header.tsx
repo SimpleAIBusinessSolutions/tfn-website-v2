@@ -38,12 +38,10 @@ export default function Header() {
 
         <nav className={`site-nav ${mobileOpen ? 'show' : ''}`}>
           <Link href='/' onClick={closeMenus}>Home</Link>
-          <Link href='/class' onClick={closeMenus}>Classes</Link>
           <div className='dropdown' onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
-            <button type='button' className='nav-link'>Programs ▾</button>
+            <button type='button' className='nav-link'>Classes ▾</button>
             {open && (
-              <div className='dropdown-menu'>
-                {classPages.map((item) => (
+              <div className='dropdown-menu'>                {classPages.map((item) => (
                   <Link key={item.slug} href={item.slug} onClick={closeMenus}>{item.name}</Link>
                 ))}
               </div>
