@@ -6,8 +6,8 @@ import Split from '@/components/Split';
 export default async function Page(){
  const content=await getContent();
  return <>
- <section style={{position:'relative',minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',textAlign:'center',overflow:'hidden',background:"url('/TFN Logo.JPG') center/contain no-repeat #000"}}>
-   <video autoPlay muted loop playsInline poster='/TFN Logo.JPG' style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover'}}>
+ <section style={{position:'relative',minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',textAlign:'center',overflow:'hidden',background:"url('/tlogo.jpg') center/contain no-repeat #000"}}>
+   <video autoPlay muted loop playsInline poster='/tlogo.jpg' style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover'}}>
      <source src='/hero.mp4' type='video/mp4' />
    </video>
    <div style={{position:'absolute',inset:0,background:'linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.78))'}} />

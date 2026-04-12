@@ -23,7 +23,7 @@ export default function Header() {
     <header style={{ position:'sticky', top:0, zIndex:100, background:'#0a0a0af2', borderBottom:'1px solid #222' }}>
       <div className="container" style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'14px 20px', gap:20, flexWrap:'wrap' }}>
         <Link href="/" style={{ display:'flex', alignItems:'center', gap:12 }}>
-          <img src="/logo.jpg" alt="TFN Logo" style={{ height:52, width:'auto' }} />
+          <img src="/tlogo.jpg" alt="tlogo.jpg" style={{ height:52, width:'auto' }} />
           <span style={{ fontSize:22, fontWeight:800 }}>TRUE FITNESS NAAS</span>
         </Link>
         <nav style={{ display:'flex', alignItems:'center', gap:22, position:'relative', flexWrap:'wrap' }}>

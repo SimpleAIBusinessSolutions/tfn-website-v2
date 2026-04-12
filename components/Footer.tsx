@@ -10,7 +10,7 @@ export default function Footer({ pages }) {
           ))}
         </div>
 
-        <img src="/logo.jpg" alt="TFN Logo" style={{ height:90, width:'auto', margin:'0 auto 14px' }} />
+        <img src="/tlogo.jpg" alt="tlogo.jpg" style={{ height:90, width:'auto', margin:'0 auto 14px' }} />
         <p className="muted">Stronger. Fitter. Better.</p>
       </div>
     </footer>

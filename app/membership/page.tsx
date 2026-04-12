@@ -9,7 +9,7 @@ export default function Page() {
   ];
 
   const extras = [
-    { title:'Pay As You Go', price:'€15', accent:'#6294AE', points:['1 flexible session','No commitment','Train when it suits you'] },
+    { title:'Try Before You Buy', price:'€15', accent:'#6294AE', points:['1 trial session','No commitment','Not available for Strength'] },
     { title:'Personal Training', price:'From €50', accent:'#22c55e', points:['Tailored training plan','Nutrition support','Minimum 12 sessions'] },
     { title:'InBody Scan', price:'€20 / €25', accent:'#eab308', points:['Members €20','Non-members €25','Track progress accurately'] },
     { title:'Nutrition 1-1 Coaching', price:'Price on Application', accent:'#F97316', points:['Custom strategy','Weekly check-ins','Ongoing accountability'] },
