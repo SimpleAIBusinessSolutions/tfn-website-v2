@@ -5,6 +5,10 @@ import { useState } from "react";
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const closeMenus = () => {
+    setMobileOpen(false);
+    setOpen(false);
+  };
 
   const classPages = [
     { name: 'Strength', slug: '/strength' },
@@ -23,8 +27,8 @@ export default function Header() {
   return (
     <header className='site-header'>
       <div className='container header-row'>
-        <Link href='/' className='brand'>
-          <img src='/logo.jpg' alt='TFN Logo' style={{ height: 48, width: 'auto' }} />
+        <Link href='/' className='brand' onClick={closeMenus}>
+          <img src='/tlogo.jpg' alt='tlogo.jpg' style={{ height: 48, width: 'auto' }} />
           <span>TRUE FITNESS NAAS</span>
         </Link>
 
@@ -33,20 +37,20 @@ export default function Header() {
         </button>
 
         <nav className={`site-nav ${mobileOpen ? 'show' : ''}`}>
-          <Link href='/'>Home</Link>
+          <Link href='/' onClick={closeMenus}>Home</Link>
+          <Link href='/class' onClick={closeMenus}>Classes</Link>
           <div className='dropdown' onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
-            <button type='button' className='nav-link'>Class ▾</button>
+            <button type='button' className='nav-link'>Programs ▾</button>
             {open && (
               <div className='dropdown-menu'>
-                <Link href='/class'>All Classes</Link>
                 {classPages.map((item) => (
-                  <Link key={item.slug} href={item.slug}>{item.name}</Link>
+                  <Link key={item.slug} href={item.slug} onClick={closeMenus}>{item.name}</Link>
                 ))}
               </div>
             )}
           </div>
           {navPages.map((p) => (
-            <Link key={p.slug} href={p.slug}>{p.name}</Link>
+            <Link key={p.slug} href={p.slug} onClick={closeMenus}>{p.name}</Link>
           ))}
         </nav>
       </div>
