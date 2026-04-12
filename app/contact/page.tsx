@@ -28,7 +28,7 @@ export default function Page() {
 
     <section className='section' style={{paddingTop:0}}>
       <div className='container split'>
-        <div className='card'>
+        <div className='card' style={{height:'100%',display:'flex',flexDirection:'column',justifyContent:'center'}}>
           <h2 style={{fontSize:38,marginTop:0}}>Get In Touch</h2>
           <p className='muted'>Unit 7, M7 Business Park,<br/>Naas, Co Kildare</p>
           <p className='muted'>Email: dave@tfn.ie</p>
@@ -36,7 +36,7 @@ export default function Page() {
           <p className='muted'>We’ll respond as quickly as possible and help you get started.</p>
         </div>
 
-        <div className='card'>
+        <div className='card' style={{height:'100%'}}>
           <h2 style={{fontSize:38,marginTop:0}}>Send A Message</h2>
           <form onSubmit={submit}>
             <input value={form.name} onChange={(e)=>setForm({...form,name:e.target.value})} placeholder='Your Name' required style={{width:'100%',padding:14,marginBottom:12,borderRadius:12,border:'1px solid #333',background:'#0a0a0a',color:'#fff'}} />
