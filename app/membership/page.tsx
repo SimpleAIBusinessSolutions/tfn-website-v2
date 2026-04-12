@@ -9,8 +9,8 @@ export default function Page() {
   ];
 
   const extras = [
-    { title:'Try Before You Buy', price:'€15', accent:'#6294AE', points:['1 trial session','No commitment','Not available for Strength'] },
-    { title:'Trial Week', price:'€30', accent:'#F97316', points:['3 trial sessions','Expires after 7 days','Not available for Strength'] },
+    { title:'Try Before You Buy', price:'€15', accent:'#6294AE', points:['1 trial session','No commitment','All classes except Strength'] },
+    { title:'Trial Week', price:'€30', accent:'#F97316', points:['3 trial sessions','Expires after 7 days','All classes except Strength'] },
     { title:'Personal Training', price:'From €50', accent:'#22c55e', points:['Tailored training plan','Nutrition support','Minimum 12 sessions'] },
     { title:'InBody Scan', price:'€20 / €25', accent:'#eab308', points:['Members €20','Non-members €25','Track progress accurately'] },
     { title:'Nutrition 1-1 Coaching', price:'Price on Application', accent:'#F97316', points:['Custom strategy','Weekly check-ins','Ongoing accountability'] },
@@ -53,8 +53,8 @@ export default function Page() {
       <section className='section' style={{paddingTop:0}}>
         <div className='container'>
           <h2 style={{fontSize:42,textAlign:'center',marginTop:0}}>Other Services</h2>
-            <div className="extras-grid">
-            {extras.slice(0,3).map((item) => (
+          <div className='extras-grid'>
+            {extras.map((item) => (
               <Link key={item.title} href='/contact' style={{display:'block'}}>
                 <div className='card' style={{height:'100%',minHeight:360,cursor:'pointer',textAlign:'center',padding:28,display:'flex',flexDirection:'column'}}>
                   <h3 style={{fontSize:28,margin:'0 0 auto'}}>{item.title}</h3>
@@ -62,21 +62,9 @@ export default function Page() {
                   <ul style={{listStyle:'none',padding:0,margin:'0 0 20px'}}>
                     {item.points.map((point) => <li key={point} style={{padding:'7px 0',color:'#bbb'}}>✓ {point}</li>)}
                   </ul>
-                  <div style={{marginTop:'auto'}}><span className='btn' style={{background:item.accent}}>Enquire Now</span></div>
-                </div>
-              </Link>
-            ))}
-          </div>
-          <div className="extras-grid-two">
-            {extras.slice(3).map((item) => (
-              <Link key={item.title} href='/contact' style={{display:'block'}}>
-                <div className='card' style={{height:'100%',minHeight:360,cursor:'pointer',textAlign:'center',padding:28,display:'flex',flexDirection:'column'}}>
-                  <h3 style={{fontSize:28,margin:'0 0 auto'}}>{item.title}</h3>
-                  <p style={{color:item.accent,fontSize:28,fontWeight:800,margin:'20px 0'}}>{item.price}</p>
-                  <ul style={{listStyle:'none',padding:0,margin:'0 0 20px'}}>
-                    {item.points.map((point) => <li key={point} style={{padding:'7px 0',color:'#bbb'}}>✓ {point}</li>)}
-                  </ul>
-                  <div style={{marginTop:'auto'}}><span className='btn' style={{background:item.accent}}>Enquire Now</span></div>
+                  <div style={{marginTop:'auto'}}>
+                    <span className='btn' style={{background:item.accent}}>Enquire Now</span>
+                  </div>
                 </div>
               </Link>
             ))}
