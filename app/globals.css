@@ -161,6 +161,18 @@ select {
   font-size: 16px;
 }
 
+input {
+  white-space: normal;
+}
+
+.chat-input {
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  height: auto;
+  line-height: 1.4;
+}
+
 @media (max-width: 900px) {
   .split { grid-template-columns: 1fr; }
   .section { padding: 56px 0; }

@@ -13,7 +13,6 @@ export default function ChatBot() {
     if (!input.trim() || loading) return;
     const next = [...messages, { role:'user', text: input }];
     setMessages(next);
-    const userText = input;
     setInput('');
     setLoading(true);
 
@@ -41,13 +40,21 @@ export default function ChatBot() {
           <div style={{maxHeight:360,overflowY:'auto',marginBottom:12}}>
             {messages.map((m,i)=>(
               <div key={i} style={{margin:'8px 0',textAlign:m.role==='user'?'right':'left'}}>
-                <span style={{display:'inline-block',padding:'10px 12px',borderRadius:14,background:m.role==='user'?'#6294AE':'#222'}}>{m.text}</span>
+                <span style={{display:'inline-block',padding:'10px 12px',borderRadius:14,background:m.role==='user'?'#6294AE':'#222',maxWidth:'85%',whiteSpace:'pre-wrap',overflowWrap:'break-word'}}>{m.text}</span>
               </div>
             ))}
             {loading && <div><span style={{display:'inline-block',padding:'10px 12px',borderRadius:14,background:'#222'}}>Typing...</span></div>}
           </div>
-          <div style={{display:'flex',gap:8}}>
-            <input value={input} onChange={(e)=>setInput(e.target.value)} onKeyDown={(e)=>e.key==='Enter'&&send()} placeholder='Ask a question...' style={{flex:1,padding:12,borderRadius:12,border:'1px solid #333',background:'#0a0a0a',color:'#fff'}} />
+          <div style={{display:'flex',gap:8,alignItems:'flex-end'}}>
+            <textarea
+              value={input}
+              onChange={(e)=>setInput(e.target.value)}
+              onKeyDown={(e)=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); send(); } }}
+              placeholder='Ask a question...'
+              rows={1}
+              className='chat-input'
+              style={{flex:1,padding:12,borderRadius:12,border:'1px solid #333',background:'#0a0a0a',color:'#fff',resize:'none',minHeight:48,maxHeight:120,overflowY:'auto'}}
+            />
             <button onClick={send} className='btn' style={{background:'#F97316'}}>Send</button>
           </div>
         </div>
