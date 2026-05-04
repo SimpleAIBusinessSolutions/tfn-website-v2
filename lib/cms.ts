@@ -1,3 +1,4 @@
+
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
@@ -6,14 +7,6 @@ const supabase = createClient(
 );
 
 export async function getContent() {
-  let isPreview = false;
-
-  // ✅ Detect preview mode (browser only)
-  if (typeof window !== "undefined") {
-    const params = new URLSearchParams(window.location.search);
-    isPreview = params.get("key") === "preview";
-  }
-
   const { data } = await supabase
     .from("content")
     .select("*")
@@ -22,10 +15,7 @@ export async function getContent() {
   const map: Record<string, any> = {};
 
   data?.forEach((item) => {
-    const key = `${item.page}.${item.key}`;
-
-    // ✅ preview = draft, live = published
-    map[key] = isPreview ? item.draft : item.published;
+    map[item.key] = item.published;
   });
 
   return map;
