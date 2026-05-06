@@ -21,18 +21,52 @@ export default function ChatBot() {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/chat', {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ messages: next.map(m => ({ role:m.role, content:m.text })) })
-      });
-      const data = await res.json();
-      setMessages(prev => [...prev, { role:'assistant', text:data.reply || 'Sorry, something went wrong.' }]);
-    } catch {
-      setMessages(prev => [...prev, { role:'assistant', text:'Connection issue. Please try again.' }]);
-    } finally {
-      setLoading(false);
-    }
+  // ✅ GET SITE + PREVIEW MODE FROM URL
+  const params = new URLSearchParams(window.location.search);
+  const siteId = params.get("site");
+  const preview = params.get("key") === "preview";
+
+  if (!siteId) {
+    setMessages(prev => [
+      ...prev,
+      { role: "assistant", text: "No site selected." }
+    ]);
+    return;
+  }
+
+  const res = await fetch("/api/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      messages: next.map(m => ({
+        role: m.role,
+        content: m.text
+      })),
+      siteId,       // ✅ CRITICAL FIX
+      preview       // ✅ allows draft vs published
+    }),
+  });
+
+  const data = await res.json();
+
+  setMessages(prev => [
+    ...prev,
+    {
+      role: "assistant",
+      text: data.reply || "Sorry, something went wrong.",
+    },
+  ]);
+} catch {
+  setMessages(prev => [
+    ...prev,
+    {
+      role: "assistant",
+      text: "Connection issue. Please try again.",
+    },
+  ]);
+} finally {
+  setLoading(false);
+}
   };
 
   return (
