@@ -1,25 +1,23 @@
 import Link from "next/link";
-import { headers } from "next/headers";
 import { getContent } from "@/lib/cms";
 import FeatureGrid from "@/components/FeatureGrid";
 import Split from "@/components/Split";
 
-export default async function Page() {
-  const headersList = headers();
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: { site?: string; key?: string };
+}) {
+  const siteId = searchParams?.site;
+  const preview = searchParams?.key === "preview";
 
-  const siteId =
-    headersList.get("x-site-id") ||
-    process.env.NEXT_PUBLIC_SITE_ID!;
-
-  const preview =
-    headersList.get("referer")?.includes("key=preview") ??
-    false;
+  if (!siteId) return <div>No site selected</div>;
 
   const content = await getContent(siteId, preview);
 
   return (
     <>
-      {/* HERO (NOW CMS DRIVEN) */}
+      {/* HERO */}
       <section
         style={{
           position: "relative",
@@ -101,8 +99,8 @@ export default async function Page() {
               margin: "0 auto",
             }}
           >
-            {content["hero_0_0"]?.subtext ||
-              "Build strength, improve fitness, and train with a community."}
+            {content["hero_0_0"]?.subheading ||
+              "Build strength, improve fitness"}
           </p>
 
           <div
@@ -129,14 +127,9 @@ export default async function Page() {
         </div>
       </section>
 
-      {/* OTHER CMS SECTIONS */}
+      {/* CMS SECTIONS */}
       <FeatureGrid data={content["featureGrid_0_1"]} />
-      <Split
-        data={{
-          ...content["split_0_2"],
-          image: "/gymlayout.jpg",
-        }}
-      />
+      <Split data={content["split_0_2"]} />
     </>
   );
 }

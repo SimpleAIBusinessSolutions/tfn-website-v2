@@ -15,13 +15,12 @@ export default function CMSLoader() {
     script.async = true;
 
     script.onload = () => {
-      if (window.__CMS__) {
-        window.__CMS__.init({
+      if ((window as any).__CMS__) {
+        (window as any).__CMS__.init({
           siteId,
           key,
           supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
-          supabaseAnonKey:
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+          supabaseAnonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
         });
       }
     };

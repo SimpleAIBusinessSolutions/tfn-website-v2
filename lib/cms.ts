@@ -9,8 +9,6 @@ export async function getContent(
   siteId: string,
   preview = false
 ) {
-  if (!siteId) return {};
-
   const { data, error } = await supabase
     .from("content")
     .select("*")
