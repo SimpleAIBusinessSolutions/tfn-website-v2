@@ -1,22 +1,18 @@
 import { headers } from "next/headers";
 import { supabase } from "@/lib/supabase";
-import Hero from "@/components/Hero";
-import FeatureGrid from "@/components/FeatureGrid";
-import Split from "@/components/Split";
 
 export default async function Page() {
-  // ✅ GET DOMAIN (CORRECT WAY)
   const headersList = headers();
   const host = headersList.get("host");
 
-  // ✅ FETCH SITE BY DOMAIN
+  // 🔥 get site by domain
   let { data: site } = await supabase
     .from("websites")
     .select("*")
     .eq("domain", host)
     .single();
 
-  // ✅ FALLBACK (PREVENT 403 / BLANK)
+  // fallback (for localhost)
   if (!site) {
     const { data } = await supabase
       .from("websites")
@@ -27,18 +23,36 @@ export default async function Page() {
     site = data;
   }
 
-  if (!site) {
-    return <div style={{ padding: 40 }}>No site found</div>;
-  }
+  if (!site) return <div>No site found</div>;
 
-  // ✅ LOAD CMS CONTENT
-  const content = site.config_json;
+  const page = site.config_json.pages.home;
+
+  if (!page) return <div>No homepage</div>;
 
   return (
-    <>
-      <Hero data={content?.hero_0_0} />
-      <FeatureGrid data={content?.featureGrid_0_1} />
-      <Split data={content?.split_0_2} />
-    </>
+    <div>
+      {page.sections.map((section: any, i: number) => {
+        switch (section.type) {
+          case "hero":
+            return (
+              <section key={i} className="hero">
+                <h1>{section.data.heading}</h1>
+                <p>{section.data.subheading}</p>
+              </section>
+            );
+
+          case "split":
+            return (
+              <section key={i}>
+                <h2>{section.data.headline}</h2>
+                <p>{section.data.text}</p>
+              </section>
+            );
+
+          default:
+            return null;
+        }
+      })}
+    </div>
   );
 }
