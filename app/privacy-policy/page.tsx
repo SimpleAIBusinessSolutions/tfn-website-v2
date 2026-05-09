@@ -1,6 +1,5 @@
-"use client";
-
-import { useEffect, useState } from "react";
+import { headers } from "next/headers";
+import { getPageContent } from "@/lib/cms";
 
 type HeroContent = {
   heading?: string;
@@ -12,42 +11,34 @@ type PolicyContent = {
   points?: string[];
 };
 
-export default function Page() {
-  const [hero, setHero] =
-    useState<HeroContent>({});
+export default async function Page() {
+  const headersList = await headers();
 
-  const [policy, setPolicy] =
-    useState<PolicyContent>({});
+  const siteId =
+    headersList.get("x-site-id") ||
+    "tfn";
 
-  useEffect(() => {
-    async function loadContent() {
-      const siteId =
-        new URLSearchParams(
-          window.location.search
-        ).get("site") || "tfn";
+  const preview =
+    headersList
+      .get("referer")
+      ?.includes("preview=true") ?? false;
 
-      const preview =
-        new URLSearchParams(
-          window.location.search
-        ).get("preview") === "true";
+  const content =
+    await getPageContent(
+      siteId,
+      "privacy-policy",
+      preview
+    );
 
-      const res = await fetch(
-        `/api/cms?page=privacy-policy&site=${siteId}&preview=${preview}`
-      );
+  const hero =
+    content[
+      "privacy_hero"
+    ] as HeroContent;
 
-      const data = await res.json();
-
-      setHero(
-        data["privacy_hero"] || {}
-      );
-
-      setPolicy(
-        data["privacy_content"] || {}
-      );
-    }
-
-    loadContent();
-  }, []);
+  const policy =
+    content[
+      "privacy_content"
+    ] as PolicyContent;
 
   return (
     <>
@@ -79,7 +70,7 @@ export default function Page() {
               margin: "10px 0",
             }}
           >
-            {hero.heading}
+            {hero?.heading}
           </h1>
 
           <p
@@ -89,7 +80,7 @@ export default function Page() {
               margin: "0 auto",
             }}
           >
-            {hero.subheading}
+            {hero?.subheading}
           </p>
         </div>
       </section>
@@ -112,10 +103,10 @@ export default function Page() {
                 marginTop: 0,
               }}
             >
-              {policy.title}
+              {policy?.title}
             </h2>
 
-            {policy.points?.map(
+            {policy?.points?.map(
               (point, index) => (
                 <p
                   key={index}
