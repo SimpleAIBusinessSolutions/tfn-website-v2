@@ -6,20 +6,17 @@ import CTABanner from "@/components/CTABanner";
 export default async function Page() {
   const headersList = await headers();
 
-  const siteId =
-    headersList.get("x-site-id") ||
-    "tfn";
+const siteId =
+  headersList.get("x-site-id") ||
+  "tfn";
 
-  const preview =
-    headersList
-      .get("referer")
-      ?.includes("preview=true") ?? false;
+const preview = true;
 
-  const content = await getPageContent(
-    siteId,
-    "blitz",
-    preview
-  );
+const content = await getPageContent(
+  siteId,
+  "blitz",
+  preview
+);
 
   const hero =
     content["blitz_hero"];
