@@ -1,12 +1,27 @@
-import { headers } from "next/headers";
 import Link from "next/link";
+import { headers } from "next/headers";
+
 import { getPageContent } from "@/lib/cms";
+import FeatureGrid from "@/components/FeatureGrid";
+import Split from "@/components/Split";
+
+type HeroContent = {
+  eyebrow?: string;
+  heading?: string;
+  subheading?: string;
+  primaryCta?: string;
+  primaryLink?: string;
+  secondaryCta?: string;
+  secondaryLink?: string;
+  video?: string;
+};
 
 export default async function Page() {
   const headersList = headers();
 
   const siteId =
-    headersList.get("x-site-id") || "tfn";
+    headersList.get("x-site-id") ||
+    "tfn";
 
   const preview =
     headersList
@@ -19,65 +34,146 @@ export default async function Page() {
     preview
   );
 
-  const hero = content["home_hero"] as {
-    headline?: string;
-    subtext?: string;
-    cta?: string;
-  };
+  const hero =
+    content["home_hero"] as HeroContent;
+
+  const features =
+    content["home_features"];
+
+  const split =
+    content["home_split"];
 
   return (
     <>
       <section
-        className="hero"
         style={{
-          minHeight: "70vh",
+          position: "relative",
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
           justifyContent: "center",
           textAlign: "center",
+          overflow: "hidden",
+          background:
+            "url('/tlogo.jpg') center/contain no-repeat #000",
         }}
       >
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/tlogo.jpg"
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+          }}
+        >
+          <source
+            src={hero?.video || "/hero.mp4"}
+            type="video/mp4"
+          />
+        </video>
+
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.78))",
+          }}
+        />
+
         <div
           className="container"
-          style={{ maxWidth: 900 }}
+          style={{
+            position: "relative",
+            zIndex: 2,
+            maxWidth: 1000,
+            padding: "40px 20px",
+          }}
         >
           <p
             style={{
-              color: "#F97316",
-              fontWeight: 700,
+              color: "#f97316",
+              fontWeight: 800,
+              letterSpacing: 4,
+              textTransform: "uppercase",
+              marginBottom: 8,
             }}
           >
-            TRUE FITNESS NAAS
+            {hero?.eyebrow}
           </p>
 
           <h1
             style={{
+              color: "#f97316",
               fontSize:
-                "clamp(42px,7vw,82px)",
-              margin: "10px 0",
+                "clamp(40px,8vw,96px)",
+              lineHeight: 0.95,
+              margin: "0 0 16px",
+              fontWeight: 900,
+              whiteSpace: "normal",
+              textShadow:
+                "0 8px 30px rgba(0,0,0,.5)",
             }}
           >
-            {hero?.headline}
+            {hero?.heading}
           </h1>
 
           <p
             className="muted"
             style={{
-              maxWidth: 720,
+              fontSize:
+                "clamp(18px,2vw,24px)",
+              maxWidth: 760,
               margin: "0 auto",
             }}
           >
-            {hero?.subtext}
+            {hero?.subheading}
           </p>
 
-          <div style={{ marginTop: 24 }}>
+          <div
+            style={{
+              marginTop: 34,
+              display: "flex",
+              justifyContent: "center",
+              gap: 16,
+              flexWrap: "wrap",
+            }}
+          >
             <Link
-              href="/contact"
+              href={
+                hero?.primaryLink ||
+                "/contact"
+              }
               className="btn"
             >
-              {hero?.cta}
+              {hero?.primaryCta}
+            </Link>
+
+            <Link
+              href={
+                hero?.secondaryLink ||
+                "/class"
+              }
+              className="btn"
+              style={{
+                background: "#fff",
+              }}
+            >
+              {hero?.secondaryCta}
             </Link>
           </div>
         </div>
       </section>
+
+      <FeatureGrid data={features} />
+
+      <Split data={split} />
     </>
   );
 }
