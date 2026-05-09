@@ -1,38 +1,53 @@
-// app/privacy-policy/page.tsx
+"use client";
 
-import { headers } from "next/headers";
-import { getPageContent } from "@/lib/cms";
+import { useEffect, useState } from "react";
 
-export default async function Page() {
-  const headersList = headers();
+type HeroContent = {
+  heading?: string;
+  subheading?: string;
+};
 
-  const siteId =
-    headersList.get("x-site-id") || "tfn";
+type PolicyContent = {
+  title?: string;
+  points?: string[];
+};
 
-  const preview =
-    headersList
-      .get("referer")
-      ?.includes("preview=true") ?? false;
+export default function Page() {
+  const [hero, setHero] =
+    useState<HeroContent>({});
 
-  const content = await getPageContent(
-    siteId,
-    "privacy-policy",
-    preview
-  );
+  const [policy, setPolicy] =
+    useState<PolicyContent>({});
 
-  const hero = content[
-    "privacy_hero"
-  ] as {
-    heading?: string;
-    subheading?: string;
-  };
+  useEffect(() => {
+    async function loadContent() {
+      const siteId =
+        new URLSearchParams(
+          window.location.search
+        ).get("site") || "tfn";
 
-  const body = content[
-    "privacy_body"
-  ] as {
-    headline?: string;
-    paragraphs?: string[];
-  };
+      const preview =
+        new URLSearchParams(
+          window.location.search
+        ).get("preview") === "true";
+
+      const res = await fetch(
+        `/api/cms?page=privacy-policy&site=${siteId}&preview=${preview}`
+      );
+
+      const data = await res.json();
+
+      setHero(
+        data["privacy_hero"] || {}
+      );
+
+      setPolicy(
+        data["privacy_content"] || {}
+      );
+    }
+
+    loadContent();
+  }, []);
 
   return (
     <>
@@ -64,7 +79,7 @@ export default async function Page() {
               margin: "10px 0",
             }}
           >
-            {hero?.heading}
+            {hero.heading}
           </h1>
 
           <p
@@ -74,7 +89,7 @@ export default async function Page() {
               margin: "0 auto",
             }}
           >
-            {hero?.subheading}
+            {hero.subheading}
           </p>
         </div>
       </section>
@@ -97,16 +112,16 @@ export default async function Page() {
                 marginTop: 0,
               }}
             >
-              {body?.headline}
+              {policy.title}
             </h2>
 
-            {body?.paragraphs?.map(
-              (paragraph, i) => (
+            {policy.points?.map(
+              (point, index) => (
                 <p
-                  key={i}
+                  key={index}
                   className="muted"
                 >
-                  {paragraph}
+                  {point}
                 </p>
               )
             )}

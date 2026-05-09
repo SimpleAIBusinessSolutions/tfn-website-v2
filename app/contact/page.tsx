@@ -2,16 +2,109 @@
 
 import { useEffect, useState } from "react";
 
+type HeroContent = {
+  heading?: string;
+  subheading?: string;
+};
+
+type ContactInfo = {
+  title?: string;
+  address?: string;
+  email?: string;
+  phone?: string;
+  text?: string;
+};
+
+type MapContent = {
+  embed?: string;
+};
+
 export default function Page() {
-  const [hero, setHero] = useState<any>(null);
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const [status, setStatus] =
+    useState("");
+
+  const [hero, setHero] =
+    useState<HeroContent>({});
+
+  const [info, setInfo] =
+    useState<ContactInfo>({});
+
+  const [map, setMap] =
+    useState<MapContent>({});
 
   useEffect(() => {
-    fetch("/api/cms?page=contact")
-      .then((r) => r.json())
-      .then((d) => {
-        setHero(d.contact_hero);
-      });
+    async function loadContent() {
+      const siteId =
+        new URLSearchParams(
+          window.location.search
+        ).get("site") || "tfn";
+
+      const preview =
+        new URLSearchParams(
+          window.location.search
+        ).get("preview") === "true";
+
+      const res = await fetch(
+        `/api/cms?page=contact&site=${siteId}&preview=${preview}`
+      );
+
+      const data = await res.json();
+
+      setHero(
+        data["contact_hero"] || {}
+      );
+
+      setInfo(
+        data["contact_info"] || {}
+      );
+
+      setMap(
+        data["contact_map"] || {}
+      );
+    }
+
+    loadContent();
   }, []);
+
+  const submit = async (
+    e: React.FormEvent
+  ) => {
+    e.preventDefault();
+
+    setStatus("Sending...");
+
+    const res = await fetch(
+      "/api/contact",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
+        body: JSON.stringify(form),
+      }
+    );
+
+    setStatus(
+      res.ok
+        ? "Message sent successfully."
+        : "Failed to send. Please try again."
+    );
+
+    if (res.ok) {
+      setForm({
+        name: "",
+        email: "",
+        message: "",
+      });
+    }
+  };
 
   return (
     <>
@@ -43,7 +136,7 @@ export default function Page() {
               margin: "10px 0",
             }}
           >
-            {hero?.heading}
+            {hero.heading}
           </h1>
 
           <p
@@ -53,8 +146,184 @@ export default function Page() {
               margin: "0 auto",
             }}
           >
-            {hero?.subheading}
+            {hero.subheading}
           </p>
+        </div>
+      </section>
+
+      <section
+        className="section"
+        style={{ paddingTop: 0 }}
+      >
+        <div className="container split">
+          <div
+            className="card"
+            style={{
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
+            <h2
+              style={{
+                fontSize: 38,
+                marginTop: 0,
+              }}
+            >
+              {info.title}
+            </h2>
+
+            <p className="muted">
+              {info.address}
+            </p>
+
+            <p className="muted">
+              Email: {info.email}
+            </p>
+
+            <p className="muted">
+              Phone: {info.phone}
+            </p>
+
+            <p className="muted">
+              {info.text}
+            </p>
+          </div>
+
+          <div
+            className="card"
+            style={{
+              height: "100%",
+            }}
+          >
+            <h2
+              style={{
+                fontSize: 38,
+                marginTop: 0,
+              }}
+            >
+              Send A Message
+            </h2>
+
+            <form onSubmit={submit}>
+              <input
+                value={form.name}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    name:
+                      e.target.value,
+                  })
+                }
+                placeholder="Your Name"
+                required
+                style={{
+                  width: "100%",
+                  padding: 14,
+                  marginBottom: 12,
+                  borderRadius: 12,
+                  border:
+                    "1px solid #333",
+                  background:
+                    "#0a0a0a",
+                  color: "#fff",
+                }}
+              />
+
+              <input
+                type="email"
+                value={form.email}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    email:
+                      e.target.value,
+                  })
+                }
+                placeholder="Your Email"
+                required
+                style={{
+                  width: "100%",
+                  padding: 14,
+                  marginBottom: 12,
+                  borderRadius: 12,
+                  border:
+                    "1px solid #333",
+                  background:
+                    "#0a0a0a",
+                  color: "#fff",
+                }}
+              />
+
+              <textarea
+                value={form.message}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    message:
+                      e.target.value,
+                  })
+                }
+                placeholder="Your Message"
+                rows={6}
+                required
+                style={{
+                  width: "100%",
+                  padding: 14,
+                  marginBottom: 12,
+                  borderRadius: 12,
+                  border:
+                    "1px solid #333",
+                  background:
+                    "#0a0a0a",
+                  color: "#fff",
+                }}
+              />
+
+              <button
+                type="submit"
+                className="btn"
+              >
+                Send Message
+              </button>
+
+              {status && (
+                <p
+                  className="muted"
+                  style={{
+                    marginTop: 12,
+                  }}
+                >
+                  {status}
+                </p>
+              )}
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section
+        className="section"
+        style={{ paddingTop: 0 }}
+      >
+        <div className="container">
+          <div
+            className="card"
+            style={{
+              padding: 0,
+              overflow: "hidden",
+            }}
+          >
+            <iframe
+              src={map.embed}
+              width="100%"
+              height="420"
+              style={{ border: 0 }}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
         </div>
       </section>
     </>
