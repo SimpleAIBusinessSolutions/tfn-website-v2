@@ -1,39 +1,53 @@
 import { headers } from "next/headers";
+
 import { getPageContent } from "@/lib/cms";
 import Split from "@/components/Split";
 import CTABanner from "@/components/CTABanner";
 
-export default async function Page() {
-  const headersList = await headers();
-
-const siteId =
-  headersList.get("x-site-id") ||
-  "tfn";
-
-const preview = true;
-
-const content = await getPageContent(
-  siteId,
-  "blitz",
-  preview
-);
-
-const hero = content["blitz_hero"] as {
+type HeroContent = {
   heading?: string;
   subheading?: string;
   cta?: string;
 };
 
-const split = content["blitz_split"] as {
+type SplitContent = {
   headline?: string;
   text?: string;
   image?: string;
 };
 
-const cta = content["blitz_cta"] as {
+type CTAContent = {
   headline?: string;
   text?: string;
+  cta?: string;
 };
+
+export default async function Page() {
+  const headersList = headers();
+
+  const siteId =
+    headersList.get("x-site-id") ||
+    "tfn";
+
+  const preview =
+    headersList
+      .get("referer")
+      ?.includes("preview=true") ?? false;
+
+  const content = await getPageContent(
+    siteId,
+    "blitz",
+    preview
+  );
+
+  const hero =
+    content["blitz_hero"] as HeroContent;
+
+  const split =
+    content["blitz_split"] as SplitContent;
+
+  const cta =
+    content["blitz_cta"] as CTAContent;
 
   return (
     <>
@@ -98,7 +112,14 @@ const cta = content["blitz_cta"] as {
         </div>
       </section>
 
-      <Split data={split} />
+      <section
+        className="section"
+        style={{ paddingTop: 0 }}
+      >
+        <div className="container">
+          <Split data={split} />
+        </div>
+      </section>
 
       <CTABanner data={cta} />
     </>
