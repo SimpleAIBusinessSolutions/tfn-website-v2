@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { headers } from "next/headers";
+import { getPageContent } from "@/lib/cms";
 
 type HeroContent = {
   heading?: string;
@@ -19,7 +21,58 @@ type MapContent = {
   embed?: string;
 };
 
-export default function Page() {
+export default async function Page() {
+  const headersList = await headers();
+
+  const siteId =
+    headersList.get("x-site-id") ||
+    "tfn";
+
+  const preview =
+    headersList
+      .get("referer")
+      ?.includes("preview=true") ?? false;
+
+  const content =
+    await getPageContent(
+      siteId,
+      "contact",
+      preview
+    );
+
+  const hero =
+    content[
+      "contact_hero"
+    ] as HeroContent;
+
+  const info =
+    content[
+      "contact_info"
+    ] as ContactInfo;
+
+  const map =
+    content[
+      "contact_map"
+    ] as MapContent;
+
+  return (
+    <ContactPage
+      hero={hero}
+      info={info}
+      map={map}
+    />
+  );
+}
+
+function ContactPage({
+  hero,
+  info,
+  map,
+}: {
+  hero: HeroContent;
+  info: ContactInfo;
+  map: MapContent;
+}) {
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -28,49 +81,6 @@ export default function Page() {
 
   const [status, setStatus] =
     useState("");
-
-  const [hero, setHero] =
-    useState<HeroContent>({});
-
-  const [info, setInfo] =
-    useState<ContactInfo>({});
-
-  const [map, setMap] =
-    useState<MapContent>({});
-
-  useEffect(() => {
-    async function loadContent() {
-      const siteId =
-        new URLSearchParams(
-          window.location.search
-        ).get("site") || "tfn";
-
-      const preview =
-        new URLSearchParams(
-          window.location.search
-        ).get("preview") === "true";
-
-      const res = await fetch(
-        `/api/cms?page=contact&site=${siteId}&preview=${preview}`
-      );
-
-      const data = await res.json();
-
-      setHero(
-        data["contact_hero"] || {}
-      );
-
-      setInfo(
-        data["contact_info"] || {}
-      );
-
-      setMap(
-        data["contact_map"] || {}
-      );
-    }
-
-    loadContent();
-  }, []);
 
   const submit = async (
     e: React.FormEvent
@@ -136,7 +146,7 @@ export default function Page() {
               margin: "10px 0",
             }}
           >
-            {hero.heading}
+            {hero?.heading}
           </h1>
 
           <p
@@ -146,7 +156,7 @@ export default function Page() {
               margin: "0 auto",
             }}
           >
-            {hero.subheading}
+            {hero?.subheading}
           </p>
         </div>
       </section>
@@ -171,23 +181,28 @@ export default function Page() {
                 marginTop: 0,
               }}
             >
-              {info.title}
+              {info?.title}
             </h2>
 
-            <p className="muted">
-              {info.address}
+            <p
+              className="muted"
+              style={{
+                whiteSpace: "pre-line",
+              }}
+            >
+              {info?.address}
             </p>
 
             <p className="muted">
-              Email: {info.email}
+              Email: {info?.email}
             </p>
 
             <p className="muted">
-              Phone: {info.phone}
+              Phone: {info?.phone}
             </p>
 
             <p className="muted">
-              {info.text}
+              {info?.text}
             </p>
           </div>
 
@@ -316,7 +331,7 @@ export default function Page() {
             }}
           >
             <iframe
-              src={map.embed}
+              src={map?.embed}
               width="100%"
               height="420"
               style={{ border: 0 }}
