@@ -14,8 +14,8 @@ type PolicyContent = {
 export default async function Page() {
   const headersList = await headers();
 
-  const siteId =
-    headersList.get("x-site-id") ||
+  const siteKey =
+    headersList.get("x-site-key") ||
     "tfn";
 
   const preview =
@@ -25,7 +25,7 @@ export default async function Page() {
 
   const content =
     await getPageContent(
-      siteId,
+      siteKey,
       "privacy-policy",
       preview
     );

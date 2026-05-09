@@ -4,7 +4,7 @@ declare global {
   interface Window {
     __CMS__?: {
       init: (config: {
-        siteId?: string;
+        siteKey?: string;
         key: string;
         supabaseUrl?: string;
         supabaseAnonKey?: string;

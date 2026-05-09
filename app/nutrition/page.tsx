@@ -19,8 +19,8 @@ type NutritionOption = {
 export default async function Page() {
   const headersList = headers();
 
-  const siteId =
-    headersList.get("x-site-id") ||
+  const siteKey =
+    headersList.get("x-site-key") ||
     "tfn";
 
   const preview =
@@ -29,7 +29,7 @@ export default async function Page() {
       ?.includes("preview=true") ?? false;
 
   const content = await getPageContent(
-    siteId,
+    siteKey,
     "nutrition",
     preview
   );

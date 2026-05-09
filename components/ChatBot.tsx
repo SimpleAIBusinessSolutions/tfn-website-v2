@@ -23,10 +23,10 @@ export default function ChatBot() {
     try {
   // ✅ GET SITE + PREVIEW MODE FROM URL
   const params = new URLSearchParams(window.location.search);
-  const siteId = params.get("site");
+  const siteKey = params.get("site");
   const preview = params.get("key") === "preview";
 
-  if (!siteId) {
+  if (!siteKey) {
     setMessages(prev => [
       ...prev,
       { role: "assistant", text: "No site selected." }
@@ -42,7 +42,7 @@ export default function ChatBot() {
         role: m.role,
         content: m.text
       })),
-      siteId,       // ✅ CRITICAL FIX
+      siteKey,       // ✅ CRITICAL FIX
       preview       // ✅ allows draft vs published
     }),
   });

@@ -6,14 +6,14 @@ const supabase = createClient(
 );
 
 export async function getPageContent(
-  siteId: string,
+  siteKey: string,
   page: string,
   preview = false
 ) {
   const { data, error } = await supabase
     .from("content")
     .select("*")
-    .eq("site_id", siteId)
+    .eq("site_key", siteKey)
     .eq("page", page);
 
   if (error) {

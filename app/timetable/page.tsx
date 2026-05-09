@@ -5,8 +5,8 @@ import { getPageContent } from "@/lib/cms";
 export default async function Page() {
   const headersList = headers();
 
-  const siteId =
-    headersList.get("x-site-id") || "tfn";
+  const siteKey =
+    headersList.get("x-site-key") || "tfn";
 
   const preview =
     headersList
@@ -14,7 +14,7 @@ export default async function Page() {
       ?.includes("preview=true") ?? false;
 
   const content = await getPageContent(
-    siteId,
+    siteKey,
     "timetable",
     preview
   );
