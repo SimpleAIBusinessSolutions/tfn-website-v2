@@ -1,58 +1,60 @@
-import { headers } from "next/headers";
-import { supabase } from "@/lib/supabase";
+import Link from "next/link";
 
-export default async function Page() {
-  const headersList = headers();
-  const host = headersList.get("host");
-
-  // 🔥 get site by domain
-  let { data: site } = await supabase
-    .from("websites")
-    .select("*")
-    .eq("domain", host)
-    .single();
-
-  // fallback (for localhost)
-  if (!site) {
-    const { data } = await supabase
-      .from("websites")
-      .select("*")
-      .limit(1)
-      .single();
-
-    site = data;
-  }
-
-  if (!site) return <div>No site found</div>;
-
-  const page = site.config_json.pages.home;
-
-  if (!page) return <div>No homepage</div>;
-
+export default function Page() {
   return (
-    <div>
-      {page.sections.map((section: any, i: number) => {
-        switch (section.type) {
-          case "hero":
-            return (
-              <section key={i} className="hero">
-                <h1>{section.data.heading}</h1>
-                <p>{section.data.subheading}</p>
-              </section>
-            );
+    <>
+      <section
+        className="hero"
+        style={{
+          minHeight: "70vh",
+          justifyContent: "center",
+          textAlign: "center",
+        }}
+      >
+        <div
+          className="container"
+          style={{ maxWidth: 900 }}
+        >
+          <p
+            style={{
+              color: "#F97316",
+              fontWeight: 700,
+            }}
+          >
+            TRUE FITNESS NAAS
+          </p>
 
-          case "split":
-            return (
-              <section key={i}>
-                <h2>{section.data.headline}</h2>
-                <p>{section.data.text}</p>
-              </section>
-            );
+          <h1
+            style={{
+              fontSize:
+                "clamp(42px,7vw,82px)",
+              margin: "10px 0",
+            }}
+          >
+            Stronger. Fitter. Better.
+          </h1>
 
-          default:
-            return null;
-        }
-      })}
-    </div>
+          <p
+            className="muted"
+            style={{
+              maxWidth: 720,
+              margin: "0 auto",
+            }}
+          >
+            Build strength, improve fitness,
+            and train with a community.
+          </p>
+
+          <div style={{ marginTop: 24 }}>
+            <Link
+              href="/contact"
+              className="btn"
+            >
+              Get Started
+            </Link>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
