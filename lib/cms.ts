@@ -21,7 +21,7 @@ export async function getPageContent(
     return {};
   }
 
-  const content: Record<string, any> = {};
+  const content: Record<string, unknown> = {};
 
   data.forEach((item) => {
     content[item.key] = preview

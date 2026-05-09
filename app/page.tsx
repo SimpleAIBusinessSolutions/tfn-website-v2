@@ -1,6 +1,30 @@
+import { headers } from "next/headers";
 import Link from "next/link";
+import { getPageContent } from "@/lib/cms";
 
-export default function Page() {
+export default async function Page() {
+  const headersList = headers();
+
+  const siteId =
+    headersList.get("x-site-id") || "tfn";
+
+  const preview =
+    headersList
+      .get("referer")
+      ?.includes("preview=true") ?? false;
+
+  const content = await getPageContent(
+    siteId,
+    "home",
+    preview
+  );
+
+  const hero = content["home_hero"] as {
+    headline?: string;
+    subtext?: string;
+    cta?: string;
+  };
+
   return (
     <>
       <section
@@ -31,7 +55,7 @@ export default function Page() {
               margin: "10px 0",
             }}
           >
-            Stronger. Fitter. Better.
+            {hero?.headline}
           </h1>
 
           <p
@@ -41,8 +65,7 @@ export default function Page() {
               margin: "0 auto",
             }}
           >
-            Build strength, improve fitness,
-            and train with a community.
+            {hero?.subtext}
           </p>
 
           <div style={{ marginTop: 24 }}>
@@ -50,7 +73,7 @@ export default function Page() {
               href="/contact"
               className="btn"
             >
-              Get Started
+              {hero?.cta}
             </Link>
           </div>
         </div>
