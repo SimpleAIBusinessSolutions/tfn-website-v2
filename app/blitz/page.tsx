@@ -8,17 +8,27 @@ export default async function Page() {
 
   const siteId =
     headersList.get("x-site-id") ||
-    process.env.NEXT_PUBLIC_SITE_ID!;
+    "tfn";
 
   const preview =
-    headersList.get("referer")?.includes("preview=true") ??
-    false;
+    headersList
+      .get("referer")
+      ?.includes("preview=true") ?? false;
 
   const content = await getPageContent(
     siteId,
     "blitz",
     preview
   );
+
+  const hero =
+    content["blitz_hero"];
+
+  const split =
+    content["blitz_split"];
+
+  const cta =
+    content["blitz_cta"];
 
   return (
     <>
@@ -45,11 +55,12 @@ export default async function Page() {
 
           <h1
             style={{
-              fontSize: "clamp(42px,7vw,82px)",
+              fontSize:
+                "clamp(42px,7vw,82px)",
               margin: "10px 0",
             }}
           >
-            {content["blitz_hero"]?.heading}
+            {hero?.heading}
           </h1>
 
           <p
@@ -59,7 +70,7 @@ export default async function Page() {
               margin: "0 auto",
             }}
           >
-            {content["blitz_hero"]?.subheading}
+            {hero?.subheading}
           </p>
 
           <div
@@ -72,17 +83,19 @@ export default async function Page() {
             <a
               href="/contact"
               className="btn"
-              style={{ background: "#F97316" }}
+              style={{
+                background: "#F97316",
+              }}
             >
-              {content["blitz_hero"]?.cta}
+              {hero?.cta}
             </a>
           </div>
         </div>
       </section>
 
-      <Split data={content["blitz_split"]} />
+      <Split data={split} />
 
-      <CTABanner data={content["blitz_cta"]} />
+      <CTABanner data={cta} />
     </>
   );
 }
