@@ -18,14 +18,22 @@ const content = await getPageContent(
   preview
 );
 
-  const hero =
-    content["blitz_hero"];
+const hero = content["blitz_hero"] as {
+  heading?: string;
+  subheading?: string;
+  cta?: string;
+};
 
-  const split =
-    content["blitz_split"];
+const split = content["blitz_split"] as {
+  headline?: string;
+  text?: string;
+  image?: string;
+};
 
-  const cta =
-    content["blitz_cta"];
+const cta = content["blitz_cta"] as {
+  headline?: string;
+  text?: string;
+};
 
   return (
     <>
