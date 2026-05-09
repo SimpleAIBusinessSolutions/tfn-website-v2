@@ -105,9 +105,7 @@ export default function Page() {
       });
     }
   };
-console.log(hero);
-console.log(info);
-console.log(map);
+
   return (
     <>
       <section
