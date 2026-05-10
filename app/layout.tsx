@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import CMSLoader from "@/components/CMSLoader";
 import ChatBot from "@/components/ChatBot";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
-
+import VisitorTracker from "@/components/VisitorTracker";
 import { headers } from "next/headers";
 
 import { getWebsite }
@@ -79,7 +79,6 @@ export default async function RootLayout({
     <html lang="en">
 
       <body>
-
         {website && (
 
           <AnalyticsTracker
@@ -92,7 +91,11 @@ export default async function RootLayout({
           />
 
         )}
-
+<VisitorTracker
+  websiteId={
+    process.env.NEXT_PUBLIC_SITE_ID!
+  }
+/>
         <CMSLoader />
 
         <Header />
