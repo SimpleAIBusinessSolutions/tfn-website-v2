@@ -1,47 +1,47 @@
 "use client";
 
 import { useEffect } from "react";
-import { createClient } from "@/lib/supabase/client";
 
 interface Props {
-  websiteId: string;
+  clientId: string;
+  siteKey: string;
 }
 
 export default function VisitorTracker({
-  websiteId,
+  clientId,
+  siteKey,
 }: Props) {
   useEffect(() => {
     async function trackVisit() {
       try {
-        const supabase = createClient();
+        await fetch("/api/track", {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
 
-        const page = window.location.pathname;
-
-        const referrer =
-          document.referrer || "Direct";
-
-        const userAgent = navigator.userAgent;
-
-        let device = "Desktop";
-
-        if (/mobile/i.test(userAgent)) {
-          device = "Mobile";
-        }
-
-        await supabase.from("visits").insert({
-          website_id: websiteId,
-          page,
-          referrer,
-          user_agent: userAgent,
-          device,
+          body: JSON.stringify({
+            client_id: clientId,
+            site_key: siteKey,
+            event_type: "page_view",
+            page:
+              window.location.pathname,
+            source:
+              document.referrer ||
+              "Direct",
+          }),
         });
       } catch (error) {
-        console.error(error);
+        console.error(
+          "Tracking failed",
+          error
+        );
       }
     }
 
     trackVisit();
-  }, [websiteId]);
+  }, [clientId, siteKey]);
 
   return null;
 }
