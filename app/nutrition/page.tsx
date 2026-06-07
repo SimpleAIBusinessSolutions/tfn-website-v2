@@ -14,6 +14,8 @@ type NutritionOption = {
   subtitle?: string;
   points?: string[];
   accent?: string;
+  href?: string;
+  buttonText?: string;
 };
 
 export default async function Page() {
@@ -119,12 +121,12 @@ export default async function Page() {
           >
             {options.map((item) => (
               <Link
-                key={item.title}
-                href="/contact"
-                style={{
-                  display: "block",
-                }}
-              >
+  key={item.title}
+  href={item.href || "/contact"}
+  style={{
+    display: "block",
+  }}
+>
                 <div
                   className="card"
                   style={{
@@ -196,15 +198,14 @@ export default async function Page() {
                         "center",
                     }}
                   >
-                    <span
-                      className="btn"
-                      style={{
-                        background:
-                          item.accent,
-                      }}
-                    >
-                      Get Started
-                    </span>
+                  <span
+  className="btn"
+  style={{
+    background: item.accent,
+  }}
+>
+  {item.buttonText || "Learn More"}
+</span>
                   </div>
                 </div>
               </Link>

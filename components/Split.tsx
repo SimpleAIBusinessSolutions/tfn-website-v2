@@ -13,7 +13,6 @@ export default function Split({
 }: {
   data: SplitData;
 }) {
-
   if (!data) return null;
 
   const media = data.image || "";
@@ -23,13 +22,9 @@ export default function Split({
 
   return (
     <section className="section">
-
       <div className="container split">
-
-        {media && (
-
-          isVideo ? (
-
+        {media &&
+          (isVideo ? (
             <video
               src={media}
               autoPlay
@@ -43,9 +38,7 @@ export default function Split({
                 objectFit: "cover",
               }}
             />
-
           ) : (
-
             <img
               src={media}
               alt={data.headline || ""}
@@ -55,13 +48,9 @@ export default function Split({
                 objectFit: "cover",
               }}
             />
-
-          )
-
-        )}
+          ))}
 
         <div>
-
           <h2
             style={{
               fontSize: 42,
@@ -79,11 +68,8 @@ export default function Split({
           >
             {data.text}
           </p>
-
         </div>
-
       </div>
-
     </section>
   );
 }

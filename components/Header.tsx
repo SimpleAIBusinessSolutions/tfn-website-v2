@@ -3,12 +3,14 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function Header() {
-  const [open, setOpen] = useState(false);
+  const [classOpen, setClassOpen] = useState(false);
+  const [nutritionOpen, setNutritionOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const closeMenus = () => {
-    setMobileOpen(false);
-    setOpen(false);
-  };
+  setMobileOpen(false);
+  setClassOpen(false);
+  setNutritionOpen(false);
+};
 
   const classPages = [
     { name: 'Strength', slug: '/strength' },
@@ -17,8 +19,12 @@ export default function Header() {
     { name: 'Survival', slug: '/survival' },
   ];
 
+const nutritionPages = [
+  {name: "Nutrition Coaching", slug: "/nutrition-coaching"},
+  {name: "Reset 6",slug: "/reset-6"},
+];
+
   const navPages = [
-    { name: 'Nutrition', slug: '/nutrition' },
     { name: 'Timetable', slug: '/timetable' },
     { name: 'Membership', slug: '/membership' },
     { name: 'Contact', slug: '/contact' },
@@ -38,16 +44,75 @@ export default function Header() {
 
         <nav className={`site-nav ${mobileOpen ? 'show' : ''}`}>
           <Link href='/' onClick={closeMenus}>Home</Link>
-          <div className='dropdown' onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
-            <Link href='/class' className='nav-link' onClick={closeMenus}>Classes</Link>
-            <button type='button' className='nav-link'>▾</button>
-            {open && (
-              <div className='dropdown-menu'>                {classPages.map((item) => (
-                  <Link key={item.slug} href={item.slug} onClick={closeMenus}>{item.name}</Link>
-                ))}
-              </div>
-            )}
-          </div>
+          <div
+  className="dropdown"
+  onMouseEnter={() => setClassOpen(true)}
+  onMouseLeave={() => setClassOpen(false)}
+>
+  <Link
+    href="/class"
+    className="nav-link"
+    onClick={closeMenus}
+  >
+    Classes
+  </Link>
+
+  <button
+    type="button"
+    className="nav-link"
+  >
+    ▾
+  </button>
+
+  {classOpen && (
+    <div className="dropdown-menu">
+      {classPages.map((item) => (
+        <Link
+          key={item.slug}
+          href={item.slug}
+          onClick={closeMenus}
+        >
+          {item.name}
+        </Link>
+      ))}
+    </div>
+  )}
+</div>
+
+<div
+  className="dropdown"
+  onMouseEnter={() => setNutritionOpen(true)}
+  onMouseLeave={() => setNutritionOpen(false)}
+>
+  <Link
+    href="/nutrition"
+    className="nav-link"
+    onClick={closeMenus}
+  >
+    Nutrition
+  </Link>
+
+  <button
+    type="button"
+    className="nav-link"
+  >
+    ▾
+  </button>
+
+  {nutritionOpen && (
+    <div className="dropdown-menu">
+      {nutritionPages.map((item) => (
+        <Link
+          key={item.slug}
+          href={item.slug}
+          onClick={closeMenus}
+        >
+          {item.name}
+        </Link>
+      ))}
+    </div>
+  )}
+</div>
           {navPages.map((p) => (
             <Link key={p.slug} href={p.slug} onClick={closeMenus}>{p.name}</Link>
           ))}
