@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { headers } from "next/headers";
-
 import { getPageContent } from "@/lib/cms";
 
 type HeroContent = {
+  eyebrow?: string;
   heading?: string;
   subheading?: string;
   cta?: string;
@@ -22,8 +22,7 @@ export default async function Page() {
   const headersList = headers();
 
   const siteKey =
-    headersList.get("x-site-key") ||
-    "tfn";
+    headersList.get("x-site-key") || "tfn";
 
   const preview =
     headersList
@@ -36,13 +35,8 @@ export default async function Page() {
     preview
   );
 
-  const hero =
-    content["nutrition_hero"] as HeroContent;
-
-  const options =
-    (content[
-      "nutrition_options"
-    ] as NutritionOption[]) || [];
+  const hero = (content["nutrition_hero"] as HeroContent) || {};
+  const options = (content["nutrition_options"] as NutritionOption[]) || [];
 
   return (
     <>
@@ -54,27 +48,18 @@ export default async function Page() {
           textAlign: "center",
         }}
       >
-        <div
-          className="container"
-          style={{ maxWidth: 920 }}
-        >
-          <p
-            style={{
-              color: "#F97316",
-              fontWeight: 700,
-            }}
-          >
-            TRUE FITNESS NAAS
+        <div className="container" style={{ maxWidth: 920 }}>
+          <p style={{ color: "#F97316", fontWeight: 700 }}>
+            {hero.eyebrow}
           </p>
 
           <h1
             style={{
-              fontSize:
-                "clamp(42px,7vw,82px)",
+              fontSize: "clamp(42px,7vw,82px)",
               margin: "10px 0",
             }}
           >
-            {hero?.heading}
+            {hero.heading}
           </h1>
 
           <p
@@ -84,7 +69,7 @@ export default async function Page() {
               margin: "0 auto",
             }}
           >
-            {hero?.subheading}
+            {hero.subheading}
           </p>
 
           <div
@@ -97,20 +82,15 @@ export default async function Page() {
             <Link
               href="/contact"
               className="btn"
-              style={{
-                background: "#F97316",
-              }}
+              style={{ background: "#F97316" }}
             >
-              {hero?.cta}
+              {hero.cta}
             </Link>
           </div>
         </div>
       </section>
 
-      <section
-        className="section"
-        style={{ paddingTop: 0 }}
-      >
+      <section className="section" style={{ paddingTop: 0 }}>
         <div className="container">
           <div
             className="grid"
@@ -119,14 +99,12 @@ export default async function Page() {
                 "repeat(auto-fit,minmax(320px,1fr))",
             }}
           >
-            {options.map((item) => (
+            {options.map((item, i) => (
               <Link
-  key={item.title}
-  href={item.href || "/contact"}
-  style={{
-    display: "block",
-  }}
->
+                key={i}
+                href={item.href || "/contact"}
+                style={{ display: "block" }}
+              >
                 <div
                   className="card"
                   style={{
@@ -141,29 +119,16 @@ export default async function Page() {
                       width: 70,
                       height: 70,
                       borderRadius: "50%",
-                      background:
-                        item.accent,
-                      margin:
-                        "0 auto 20px",
+                      background: item.accent,
+                      margin: "0 auto 20px",
                     }}
                   />
 
-                  <h2
-                    style={{
-                      marginTop: 0,
-                      fontSize: 32,
-                    }}
-                  >
+                  <h2 style={{ marginTop: 0, fontSize: 32 }}>
                     {item.title}
                   </h2>
 
-                  <p
-                    style={{
-                      color:
-                        item.accent,
-                      fontWeight: 700,
-                    }}
-                  >
+                  <p style={{ color: item.accent, fontWeight: 700 }}>
                     {item.subtitle}
                   </p>
 
@@ -174,38 +139,23 @@ export default async function Page() {
                       margin: "22px 0",
                     }}
                   >
-                    {item.points?.map(
-                      (point) => (
-                        <li
-                          key={point}
-                          style={{
-                            padding:
-                              "8px 0",
-                            color:
-                              "#bbb",
-                          }}
-                        >
-                          ✓ {point}
-                        </li>
-                      )
-                    )}
+                    {item.points?.map((point, idx) => (
+                      <li
+                        key={idx}
+                        style={{ padding: "8px 0", color: "#bbb" }}
+                      >
+                        ✓ {point}
+                      </li>
+                    ))}
                   </ul>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent:
-                        "center",
-                    }}
-                  >
-                  <span
-  className="btn"
-  style={{
-    background: item.accent,
-  }}
->
-  {item.buttonText || "Learn More"}
-</span>
+                  <div style={{ display: "flex", justifyContent: "center" }}>
+                    <span
+                      className="btn"
+                      style={{ background: item.accent }}
+                    >
+                      {item.buttonText}
+                    </span>
                   </div>
                 </div>
               </Link>
