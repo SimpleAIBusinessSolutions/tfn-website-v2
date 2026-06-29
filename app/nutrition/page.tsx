@@ -1,39 +1,29 @@
+import Link from "next/link";
 import { headers } from "next/headers";
+
 import { getPageContent } from "@/lib/cms";
-import Split from "@/components/Split";
-import ChecklistSection from "@/components/ChecklistSection";
-import CTABanner from "@/components/CTABanner";
 
 type HeroContent = {
-  eyebrow?: string;
   heading?: string;
   subheading?: string;
   cta?: string;
 };
 
-type SplitContent = {
-  headline?: string;
-  text?: string;
-  image?: string;
-};
-
-type ChecklistContent = {
-  eyebrow?: string;
-  headline?: string;
-  accent?: string;
+type NutritionOption = {
+  title?: string;
+  subtitle?: string;
   points?: string[];
+  accent?: string;
+  href?: string;
+  buttonText?: string;
 };
 
-type CTAContent = {
-  headline?: string;
-  text?: string;
-};
-
-export default async function NutritionCoachingPage() {
+export default async function Page() {
   const headersList = headers();
 
   const siteKey =
-    headersList.get("x-site-key") || "tfn";
+    headersList.get("x-site-key") ||
+    "tfn";
 
   const preview =
     headersList
@@ -42,107 +32,187 @@ export default async function NutritionCoachingPage() {
 
   const content = await getPageContent(
     siteKey,
-    "nutrition-coaching",
+    "nutrition",
     preview
   );
 
-  const hero = (content["nutrition_coaching_hero"] as HeroContent) || {};
-  const split1 = (content["nutrition_coaching_split1"] as SplitContent) || {};
-  const forYou = (content["nutrition_coaching_for_you"] as ChecklistContent) || {};
-  const included = (content["nutrition_coaching_included"] as ChecklistContent) || {};
-  const whyStruggle = (content["nutrition_coaching_why_struggle"] as ChecklistContent) || {};
-  const expectations = (content["nutrition_coaching_expectations"] as ChecklistContent) || {};
-  const split2 = (content["nutrition_coaching_split2"] as SplitContent) || {};
-  const cta = (content["nutrition_coaching_cta"] as CTAContent) || {};
+  const hero =
+    content["nutrition_hero"] as HeroContent;
+
+  const options =
+    (content[
+      "nutrition_options"
+    ] as NutritionOption[]) || [];
 
   return (
     <>
-      <section className="hero">
+      <section
+        className="hero"
+        style={{
+          minHeight: "65vh",
+          justifyContent: "center",
+          textAlign: "center",
+        }}
+      >
         <div
           className="container"
-          style={{
-            maxWidth: 900,
-            textAlign: "center",
-          }}
+          style={{ maxWidth: 920 }}
         >
-          <p style={{ color: "#F97316", fontWeight: 700 }}>
-            {hero.eyebrow}
+          <p
+            style={{
+              color: "#F97316",
+              fontWeight: 700,
+            }}
+          >
+            TRUE FITNESS NAAS
           </p>
 
           <h1
             style={{
-              fontSize: "clamp(48px,8vw,84px)",
-              lineHeight: 1,
+              fontSize:
+                "clamp(42px,7vw,82px)",
               margin: "10px 0",
             }}
           >
-            {hero.heading}
+            {hero?.heading}
           </h1>
 
           <p
             className="muted"
             style={{
-              fontSize: 20,
-              maxWidth: 700,
+              maxWidth: 760,
               margin: "0 auto",
             }}
           >
-            {hero.subheading}
+            {hero?.subheading}
           </p>
 
-          <div style={{ marginTop: 28 }}>
-            <a
+          <div
+            style={{
+              marginTop: 24,
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Link
               href="/contact"
               className="btn"
-              style={{ background: "#F97316" }}
+              style={{
+                background: "#F97316",
+              }}
             >
-              {hero.cta}
-            </a>
+              {hero?.cta}
+            </Link>
           </div>
         </div>
       </section>
 
-      <Split data={split1} />
+      <section
+        className="section"
+        style={{ paddingTop: 0 }}
+      >
+        <div className="container">
+          <div
+            className="grid"
+            style={{
+              gridTemplateColumns:
+                "repeat(auto-fit,minmax(320px,1fr))",
+            }}
+          >
+            {options.map((item) => (
+              <Link
+  key={item.title}
+  href={item.href || "/contact"}
+  style={{
+    display: "block",
+  }}
+>
+                <div
+                  className="card"
+                  style={{
+                    height: "100%",
+                    cursor: "pointer",
+                    textAlign: "center",
+                    padding: 32,
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 70,
+                      height: 70,
+                      borderRadius: "50%",
+                      background:
+                        item.accent,
+                      margin:
+                        "0 auto 20px",
+                    }}
+                  />
 
-      <section className="section">
-        <div className="container split">
-          <ChecklistSection
-            eyebrow={forYou.eyebrow}
-            headline={forYou.headline}
-            accent={forYou.accent}
-            points={forYou.points}
-          />
+                  <h2
+                    style={{
+                      marginTop: 0,
+                      fontSize: 32,
+                    }}
+                  >
+                    {item.title}
+                  </h2>
 
-          <ChecklistSection
-            eyebrow={included.eyebrow}
-            headline={included.headline}
-            accent={included.accent}
-            points={included.points}
-          />
+                  <p
+                    style={{
+                      color:
+                        item.accent,
+                      fontWeight: 700,
+                    }}
+                  >
+                    {item.subtitle}
+                  </p>
+
+                  <ul
+                    style={{
+                      listStyle: "none",
+                      padding: 0,
+                      margin: "22px 0",
+                    }}
+                  >
+                    {item.points?.map(
+                      (point) => (
+                        <li
+                          key={point}
+                          style={{
+                            padding:
+                              "8px 0",
+                            color:
+                              "#bbb",
+                          }}
+                        >
+                          ✓ {point}
+                        </li>
+                      )
+                    )}
+                  </ul>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent:
+                        "center",
+                    }}
+                  >
+                  <span
+  className="btn"
+  style={{
+    background: item.accent,
+  }}
+>
+  {item.buttonText || "Learn More"}
+</span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
-
-      <section className="section" style={{ paddingTop: 0 }}>
-        <div className="container split">
-          <ChecklistSection
-            eyebrow={whyStruggle.eyebrow}
-            headline={whyStruggle.headline}
-            accent={whyStruggle.accent}
-            points={whyStruggle.points}
-          />
-
-          <ChecklistSection
-            eyebrow={expectations.eyebrow}
-            headline={expectations.headline}
-            accent={expectations.accent}
-            points={expectations.points}
-          />
-        </div>
-      </section>
-
-      <Split data={split2} />
-
-      <CTABanner data={cta} />
     </>
   );
 }
