@@ -46,29 +46,14 @@ export default async function NutritionCoachingPage() {
     preview
   );
 
-  const hero =
-    (content["nutrition_coaching_hero"] as HeroContent) || {};
-
-  const split1 =
-    (content["nutrition_coaching_split1"] as SplitContent) || {};
-
-  const forYou =
-    (content["nutrition_coaching_for_you"] as ChecklistContent) || {};
-
-  const included =
-    (content["nutrition_coaching_included"] as ChecklistContent) || {};
-
-  const whyStruggle =
-    (content["nutrition_coaching_why_struggle"] as ChecklistContent) || {};
-
-  const expectations =
-    (content["nutrition_coaching_expectations"] as ChecklistContent) || {};
-
-  const split2 =
-    (content["nutrition_coaching_split2"] as SplitContent) || {};
-
-  const cta =
-    (content["nutrition_coaching_cta"] as CTAContent) || {};
+  const hero = (content["nutrition_coaching_hero"] as HeroContent) || {};
+  const split1 = (content["nutrition_coaching_split1"] as SplitContent) || {};
+  const forYou = (content["nutrition_coaching_for_you"] as ChecklistContent) || {};
+  const included = (content["nutrition_coaching_included"] as ChecklistContent) || {};
+  const whyStruggle = (content["nutrition_coaching_why_struggle"] as ChecklistContent) || {};
+  const expectations = (content["nutrition_coaching_expectations"] as ChecklistContent) || {};
+  const split2 = (content["nutrition_coaching_split2"] as SplitContent) || {};
+  const cta = (content["nutrition_coaching_cta"] as CTAContent) || {};
 
   return (
     <>
@@ -80,13 +65,8 @@ export default async function NutritionCoachingPage() {
             textAlign: "center",
           }}
         >
-          <p
-            style={{
-              color: "#F97316",
-              fontWeight: 700,
-            }}
-          >
-            {hero.eyebrow || "TRUE FITNESS NAAS"}
+          <p style={{ color: "#F97316", fontWeight: 700 }}>
+            {hero.eyebrow}
           </p>
 
           <h1
@@ -96,7 +76,7 @@ export default async function NutritionCoachingPage() {
               margin: "10px 0",
             }}
           >
-            {hero.heading || "1-to-1 Nutrition"}
+            {hero.heading}
           </h1>
 
           <p
@@ -107,8 +87,7 @@ export default async function NutritionCoachingPage() {
               margin: "0 auto",
             }}
           >
-            {hero.subheading ||
-              "A fully bespoke 12-week coaching program designed to help you improve body composition, build sustainable habits and finally create an approach to nutrition that actually fits your lifestyle."}
+            {hero.subheading}
           </p>
 
           <div style={{ marginTop: 28 }}>
@@ -117,7 +96,7 @@ export default async function NutritionCoachingPage() {
               className="btn"
               style={{ background: "#F97316" }}
             >
-              {hero.cta || "Apply Now"}
+              {hero.cta}
             </a>
           </div>
         </div>
@@ -128,38 +107,17 @@ export default async function NutritionCoachingPage() {
       <section className="section">
         <div className="container split">
           <ChecklistSection
-            eyebrow={forYou.eyebrow || "BUILT FOR REAL LIFE"}
-            headline={forYou.headline || "THIS PROGRAM IS FOR YOU IF…"}
-            accent={forYou.accent || "#60A5FA"}
-            points={
-              forYou.points || [
-                "You've struggled with consistency around nutrition",
-                "You've tried restrictive diets that weren't sustainable",
-                "You want a personalised approach instead of generic meal plans",
-                "You feel overwhelmed by conflicting nutrition advice online",
-                "You want accountability and ongoing support",
-                "You want to improve body composition without extreme dieting",
-                "You want to build healthier habits that fit real life",
-              ]
-            }
+            eyebrow={forYou.eyebrow}
+            headline={forYou.headline}
+            accent={forYou.accent}
+            points={forYou.points}
           />
 
           <ChecklistSection
-            eyebrow={included.eyebrow || "WHAT'S INCLUDED"}
-            headline={included.headline || "EVERYTHING YOU NEED"}
-            accent={included.accent || "#F97316"}
-            points={
-              included.points || [
-                "Initial Consultation & Goal Assessment",
-                "Comprehensive Nutrition & Lifestyle Questionnaire",
-                "Fully Bespoke Nutrition Plan",
-                "Individual Calorie & Macronutrient Targets",
-                "Weekly Coaching Check-In Calls",
-                "Weekly Nutrition & Habit Tracking",
-                "Ongoing Accountability & Support",
-                "InBody Scans & Progress Photos Every 4 Weeks",
-              ]
-            }
+            eyebrow={included.eyebrow}
+            headline={included.headline}
+            accent={included.accent}
+            points={included.points}
           />
         </div>
       </section>
@@ -167,35 +125,17 @@ export default async function NutritionCoachingPage() {
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="container split">
           <ChecklistSection
-            eyebrow={whyStruggle.eyebrow || "WHY MOST PEOPLE STRUGGLE"}
-            headline={whyStruggle.headline || "SUSTAINABLE NUTRITION WINS"}
-            accent={whyStruggle.accent || "#F97316"}
-            points={
-              whyStruggle.points || [
-                "No restrictive diets",
-                "Personalised to your goals",
-                "Focus on habits not quick fixes",
-                "Regular accountability",
-                "Sustainable results",
-              ]
-            }
+            eyebrow={whyStruggle.eyebrow}
+            headline={whyStruggle.headline}
+            accent={whyStruggle.accent}
+            points={whyStruggle.points}
           />
 
           <ChecklistSection
-            eyebrow={expectations.eyebrow || "RESULTS YOU CAN EXPECT"}
-            headline={expectations.headline || "WHAT YOU CAN EXPECT"}
-            accent={expectations.accent || "#60A5FA"}
-            points={
-              expectations.points || [
-                "Improve body composition and reduce body fat",
-                "Develop healthier eating habits",
-                "Feel more in control around food and nutrition",
-                "Build consistency and routine",
-                "Improve energy levels and overall lifestyle structure",
-                "Gain clarity and confidence around nutrition",
-                "Learn how to maintain results long term",
-              ]
-            }
+            eyebrow={expectations.eyebrow}
+            headline={expectations.headline}
+            accent={expectations.accent}
+            points={expectations.points}
           />
         </div>
       </section>
