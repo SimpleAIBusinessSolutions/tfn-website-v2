@@ -3,11 +3,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CMSLoader from "@/components/CMSLoader";
 import ChatBot from "@/components/ChatBot";
-import AnalyticsTracker from "@/components/AnalyticsTracker";
 import { headers } from "next/headers";
-
-import { getWebsite }
-from "@/lib/site";
+import { getWebsite } from "@/lib/site";
 
 const pages = [
   {
@@ -59,38 +56,14 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
-  const headersList =
-    headers();
+  const headersList = headers();
 
   const siteKey =
-    headersList.get(
-      "x-site-key"
-    ) || "tfn";
-
-  const website =
-    await getWebsite(
-      siteKey
-    );
+    headersList.get("x-site-key") || "tfn";
 
   return (
-
     <html lang="en">
-
       <body>
-        {website && (
-
-          <AnalyticsTracker
-            clientId={
-              website.client_id
-            }
-            siteKey={
-              website.site_key
-            }
-          />
-
-        )}
-
         <CMSLoader />
 
         <Header />
@@ -98,16 +71,11 @@ export default async function RootLayout({
         {children}
 
         <Footer
-          pages={pages.filter(
-            (p) =>
-              p.showInFooter
-          )}
+          pages={pages.filter((p) => p.showInFooter)}
         />
 
         <ChatBot />
-
       </body>
-
     </html>
   );
 }
