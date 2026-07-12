@@ -1,4 +1,5 @@
 import "./globals.css";
+import Script from "next/script";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CMSLoader from "@/components/CMSLoader";
@@ -75,6 +76,13 @@ export default async function RootLayout({
         />
 
         <ChatBot />
+
+        {/* First-party analytics tracking */}
+        <Script
+          src="https://dashboard.scholardigitalsolutions.ie/tracker.js"
+          data-site-key="tfn"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
