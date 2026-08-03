@@ -2,8 +2,6 @@ import Link from "next/link";
 import { headers } from "next/headers";
 
 import { getPageContent } from "@/lib/cms";
-import FeatureGrid from "@/components/FeatureGrid";
-import Split from "@/components/Split";
 
 type HeroContent = {
   eyebrow?: string;
@@ -72,12 +70,6 @@ export default async function Page() {
 
   const hero =
     content["home_hero"] as HeroContent;
-
-  const features =
-    content["home_features"];
-
-  const split =
-    content["home_split"];
 
   // CLASSES — same content shown on /class, so editing that page
   // in the dashboard also updates what's featured here.
@@ -230,8 +222,6 @@ export default async function Page() {
           </div>
         </div>
       </section>
-
-      <FeatureGrid data={features} />
 
       {/* CLASSES */}
       {classItems.length > 0 && (
@@ -661,8 +651,6 @@ export default async function Page() {
           </div>
         </section>
       )}
-
-      <Split data={split} />
     </>
   );
 }
